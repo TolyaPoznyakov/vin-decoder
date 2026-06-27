@@ -1,9 +1,13 @@
-import api from "../api/axios";
+import axios from "axios";
 
-export async function decodeVin(vin: string) {
+const api = axios.create({
+  baseURL: "https://vpic.nhtsa.dot.gov/api",
+});
+
+export const decodeVin = async (vin: string) => {
   const { data } = await api.get(
-    `/vehicles/DecodeVin/${vin}?format=json`
+    `/vehicles/DecodeVinValuesExtended/${vin}?format=json`
   );
 
   return data;
-}
+};

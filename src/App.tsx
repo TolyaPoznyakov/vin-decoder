@@ -1,14 +1,7 @@
-import VinForm from "./components/VinForm/VinForm";
-import "./App.css";
+import Home from "./pages/Home";
 
 function App() {
-  return (
-    <main className="container">
-      <h1 className="title">VIN Decoder</h1>
-
-      <VinForm />
-    </main>
-  );
+  return <Home />;
 }
 
 export default App;
