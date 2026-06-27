@@ -1,40 +1,60 @@
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 import styles from "./VinForm.module.css";
 
 type VinFormProps = {
   onDecode: (vin: string) => void;
 };
 
+type FormValues = {
+  vin: string;
+};
+
 function VinForm({ onDecode }: VinFormProps) {
-  const [vin, setVin] = useState("");
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<FormValues>();
 
-  const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setVin(event.target.value);
-  };
+  const vin = watch("vin", "");
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onDecode(vin);
+  const onSubmit = (data: FormValues) => {
+    onDecode(data.vin.toUpperCase());
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
-      {/*<label className={styles.label} htmlFor="vin">*/}
-      {/*  VIN code*/}
-      {/*</label>*/}
+    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+      <div className={styles.inputWrapper}>
+        <input
+          className={`${styles.input} ${errors.vin ? styles.invalid : ""}`}
+          type="text"
+          placeholder="Enter 17-character VIN"
+          autoComplete="off"
+          maxLength={17}
+          {...register("vin", {
+            required: "VIN is required.",
+            minLength: {
+              value: 17,
+              message: "VIN must contain 17 characters.",
+            },
+            maxLength: {
+              value: 17,
+              message: "VIN must contain 17 characters.",
+            },
+            pattern: {
+              value: /^[A-HJ-NPR-Z0-9]+$/,
+              message: "VIN contains invalid characters.",
+            },
+          })}
+        />
 
-      <input
-        className={styles.input}
-        id="vin"
-        name="vin"
-        type="text"
-        placeholder="Enter 17-character VIN"
-        autoComplete="off"
-        value={vin}
-        onChange={handleInputChange}
-      />
+        <span className={styles.counter}>{vin.length}/17</span>
+      </div>
+
+      {errors.vin && (
+        <span className={styles.error}>{errors.vin.message}</span>
+      )}
 
       <button className={styles.button} type="submit">
         Decode
