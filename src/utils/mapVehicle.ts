@@ -2,7 +2,8 @@ export function mapVehicle(api: any) {
   const v = api.Results[0];
 
   return {
-    make: v.Make,
+    vin: v.VIN,
+    make: v.Make || v.Manufacturer || "Unknown",
     model: v.Model,
     year: v.ModelYear,
 
