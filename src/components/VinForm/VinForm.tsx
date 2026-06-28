@@ -1,19 +1,22 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import styles from "./VinForm.module.css";
 
 type VinFormProps = {
   onDecode: (vin: string) => void;
+  externalVin?: string;
 };
 
 type FormValues = {
   vin: string;
 };
 
-function VinForm({ onDecode }: VinFormProps) {
+function VinForm({ onDecode, externalVin }: VinFormProps) {
   const {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<FormValues>();
 
@@ -22,6 +25,12 @@ function VinForm({ onDecode }: VinFormProps) {
   const onSubmit = (data: FormValues) => {
     onDecode(data.vin.toUpperCase());
   };
+
+  useEffect(() => {
+    if (externalVin) {
+      setValue("vin", externalVin);
+    }
+  }, [externalVin, setValue]);
 
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>

@@ -14,6 +14,8 @@ function Home() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [message, setMessage] = useState("");
+  const [vinInput, setVinInput] = useState("");
   const [history, setHistory] = useState<Vehicle[]>(() => {
     const saved = localStorage.getItem("history");
     return saved ? JSON.parse(saved) : [];
@@ -31,15 +33,18 @@ function Home() {
 
   const handleDecode = async (vin: string) => {
     try {
-      setLoading(true);
-      setError(null);
-
       if (data?.vin === vin) {
         setLoading(false);
         return;
       }
 
+      setLoading(true);
+      setError(null);
+      setMessage("");
+
       const response = await decodeVin(vin);
+
+      setMessage(response.Message);
 
       const vehicle = mapVehicle(response);
 
@@ -63,6 +68,7 @@ function Home() {
   };
 
   const handleSelectHistory = async (vin: string) => {
+    setVinInput(vin);
     handleDecode(vin);
   };
 
@@ -72,12 +78,12 @@ function Home() {
 
   return (
     <main className="page">
-      <h1>Vin-decoder</h1>
-
-      <VinForm onDecode={handleDecode} />
+      <VinForm onDecode={handleDecode} externalVin={vinInput}/>
 
       {loading && <p>Loading...</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
+
+      {message && <p className="message">{message}</p>}
 
       {data && <VinResults vehicle={data} />}
       <SearchHistory history={history} onSelect={handleSelectHistory} onDelete={handleDeleteHistory} />

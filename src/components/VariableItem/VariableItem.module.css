@@ -1,0 +1,20 @@
+.variable-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+    background: #fff;
+}
+
+.variable-card h3 {
+    margin: 0 0 8px;
+}
+
+.variable-description {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.variable-description ul {
+    padding-left: 18px;
+}
