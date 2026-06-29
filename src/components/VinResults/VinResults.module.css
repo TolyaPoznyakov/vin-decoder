@@ -6,22 +6,9 @@
     box-shadow: var(--shadow);
 }
 
-.title {
-    font-size: 18px;
-    margin-bottom: 16px;
-    font-weight: 600;
-}
-
 .grid {
     display: grid;
     gap: 10px;
-}
-
-.row {
-    display: flex;
-    justify-content: space-between;
-    padding: 8px 10px;
-    border-bottom: 1px solid var(--border);
 }
 
 .label {

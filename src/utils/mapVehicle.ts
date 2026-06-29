@@ -1,5 +1,16 @@
-export function mapVehicle(api: any) {
-  const v = api.Results[0];
+import type { NhtsaResponse, NhtsaVinResult } from "../types/api";
+import type { Vehicle } from "../types/vehicle";
+
+
+export function mapVehicle(
+  response: NhtsaResponse<NhtsaVinResult>
+): Vehicle {
+
+  const v = response.Results[0];
+
+  if (!v) {
+    throw new Error("No results returned for this VIN");
+  }
 
   return {
     vin: v.VIN,
