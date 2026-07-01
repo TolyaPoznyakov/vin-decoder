@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { Vehicle } from "../types/vehicle";
 import { decodeVin } from "../plugins/vinService.ts";
 import { mapVehicle } from "../utils/mapVehicle";
+import { isSuccessfulDecode, isValidVehicle } from "../utils/vinValidation";
 import { useLocalStorage } from "./useLocalStorage.ts";
 
 export function useVinDecoder() {
@@ -17,7 +18,9 @@ export function useVinDecoder() {
   const [message, setMessage] = useState("");
 
   const decode = async (vin: string) => {
-    if (data?.vin === vin) {
+    const normalizedVin = vin.toUpperCase();
+
+    if (data?.vin === normalizedVin) {
       setMessage("This VIN is already loaded");
       return;
     }
@@ -26,29 +29,34 @@ export function useVinDecoder() {
     setError(null);
     setMessage("");
 
+    const rejectDecode = (feedback: { error?: string; message?: string }) => {
+      setHistory((prev) => prev.filter((v) => v.vin !== normalizedVin));
+      setData(null);
+      setError(feedback.error ?? null);
+      setMessage(feedback.message ?? "");
+    };
+
     try {
-      const response = await decodeVin(vin);
+      const response = await decodeVin(normalizedVin);
 
       if (!response || response.Results.length === 0) {
-        setError("Vehicle not found");
+        rejectDecode({ error: "Vehicle not found" });
         return;
       }
 
       const result = response.Results[0];
-      const vehicle = mapVehicle(response);
 
-      if (!result.Make && !result.Model && !result.ModelYear) {
-        setError(result.ErrorText || "Invalid VIN");
+      if (!isSuccessfulDecode(result)) {
+        rejectDecode({
+          error: result.ErrorText || "Invalid VIN",
+        });
         return;
       }
 
-      if (result.ErrorCode !== "0") {
-        setMessage(result.ErrorText);
-      } else {
-        setMessage(response.Message);
-      }
+      const vehicle = mapVehicle(response);
+      setMessage(response.Message);
 
-      if (data) {
+      if (data && isValidVehicle(data)) {
         setHistory((prev) => {
           const deduped = [data, ...prev.filter((v) => v.vin !== data.vin)];
           return deduped.slice(0, 3);
@@ -57,11 +65,9 @@ export function useVinDecoder() {
 
       setData(vehicle);
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError("Failed to decode VIN");
-      }
+      rejectDecode({
+        error: error instanceof Error ? error.message : "Failed to decode VIN",
+      });
     } finally {
       setLoading(false);
     }

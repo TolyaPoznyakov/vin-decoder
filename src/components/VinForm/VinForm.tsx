@@ -5,20 +5,23 @@ import styles from "./VinForm.module.css";
 type VinFormProps = {
   onDecode: (vin: string) => void;
   externalVin?: string;
+  defaultVin?: string;
 };
 
 type FormValues = {
   vin: string;
 };
 
-function VinForm({ onDecode, externalVin }: VinFormProps) {
+function VinForm({ onDecode, externalVin, defaultVin }: VinFormProps) {
   const {
     register,
     handleSubmit,
     watch,
     setValue,
     formState: { errors },
-  } = useForm<FormValues>();
+  } = useForm<FormValues>({
+    defaultValues: { vin: defaultVin ?? "" },
+  });
 
   const vin = watch("vin", "");
 
@@ -63,9 +66,7 @@ function VinForm({ onDecode, externalVin }: VinFormProps) {
         <span className={styles.counter}>{vin.length}/17</span>
       </div>
 
-      {errors.vin && (
-        <span className={styles.error}>{errors.vin.message}</span>
-      )}
+      {errors.vin && <span className={styles.error}>{errors.vin.message}</span>}
 
       <button className={styles.button} type="submit">
         Decode

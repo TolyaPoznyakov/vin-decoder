@@ -33,6 +33,7 @@ function Home() {
       <VinForm
         onDecode={handleDecode}
         externalVin={vinInput}
+        defaultVin={data?.vin}
       />
 
       {loading && <Loader />}
