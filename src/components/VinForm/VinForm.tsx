@@ -22,6 +22,22 @@ function VinForm({ onDecode, externalVin }: VinFormProps) {
 
   const vin = watch("vin", "");
 
+  const vinValidation = {
+    required: "VIN is required.",
+    minLength: {
+      value: 17,
+      message: "VIN must contain 17 characters.",
+    },
+    maxLength: {
+      value: 17,
+      message: "VIN must contain 17 characters.",
+    },
+    pattern: {
+      value: /^[A-HJ-NPR-Z0-9]+$/,
+      message: "VIN contains invalid characters.",
+    },
+  };
+
   const onSubmit = (data: FormValues) => {
     onDecode(data.vin.toUpperCase());
   };
@@ -41,21 +57,7 @@ function VinForm({ onDecode, externalVin }: VinFormProps) {
           placeholder="Enter 17-character VIN"
           autoComplete="off"
           maxLength={17}
-          {...register("vin", {
-            required: "VIN is required.",
-            minLength: {
-              value: 17,
-              message: "VIN must contain 17 characters.",
-            },
-            maxLength: {
-              value: 17,
-              message: "VIN must contain 17 characters.",
-            },
-            pattern: {
-              value: /^[A-HJ-NPR-Z0-9]+$/,
-              message: "VIN contains invalid characters.",
-            },
-          })}
+          {...register("vin", vinValidation)}
         />
 
         <span className={styles.counter}>{vin.length}/17</span>
