@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { Vehicle } from "../types/vehicle";
-import { decodeVin } from "../services/vinService";
+import { decodeVin } from "../plugins/vinService.ts";
 import { mapVehicle } from "../utils/mapVehicle";
 import {useLocalStorage} from "./useLocalStorage.ts";
 
@@ -23,7 +23,10 @@ export function useVinDecoder() {
 
   const decode = async (vin: string) => {
 
-    if (data?.vin === vin) return;
+    if (data?.vin === vin) {
+      setMessage("This VIN is already loaded");
+      return;
+    }
 
     setLoading(true);
     setError(null);
@@ -37,19 +40,18 @@ export function useVinDecoder() {
         return;
       }
 
-      setMessage(response.Message);
-
+      const result = response.Results[0];
       const vehicle = mapVehicle(response);
 
-      if (data) {
-        setHistory((prev) => {
-          const deduped = [
-            data,
-            ...prev.filter((v) => v.vin !== data.vin),
-          ];
+      if (!result.Make && !result.Model && !result.ModelYear) {
+        setError(result.ErrorText || "Invalid VIN");
+        return;
+      }
 
-          return deduped.slice(0, 3);
-        });
+      if (result.ErrorCode !== "0") {
+        setMessage(result.ErrorText);
+      } else {
+        setMessage(response.Message);
       }
 
       setData(vehicle);

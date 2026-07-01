@@ -13,6 +13,8 @@
   font-family: system-ui, "Segoe UI", Roboto, sans-serif;
   font-size: 16px;
   line-height: 1.5;
+  --code-bg: #1f2028;
+  --shadow: rgba(0, 0, 0, 0.4) 0 10px 20px;
 
   color: var(--text);
   background: var(--bg);
@@ -93,7 +95,6 @@ button:hover {
 }
 
 code {
-  font-family: var(--mono);
   background: var(--code-bg);
   padding: 3px 6px;
   border-radius: 4px;

@@ -1,10 +1,5 @@
 import VariableItem from "../VariableItem/VariableItem";
-
-type Variable = {
-  ID: number;
-  Name: string;
-  Description: string;
-};
+import type { Variable } from "../../types/variable.ts";
 
 type Props = {
   items: Variable[];
@@ -12,10 +7,11 @@ type Props = {
 
 function VariablesList({ items }: Props) {
   return (
-    <div className="variables-list">
+    <div>
       {items.map((item) => (
         <VariableItem
           key={item.ID}
+          id={item.ID}
           name={item.Name}
           description={item.Description}
         />

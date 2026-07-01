@@ -1,0 +1,20 @@
+.backButton {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text-h);
+    width: 100%;
+    max-width: 140px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    align-items: center;
+    box-shadow: var(--shadow);
+}
+
+.backButton:hover {
+    transform: translateY(-2px);
+    background: var(--accent-bg);
+    border-color: var(--accent-border);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+    color: var(--accent);
+}

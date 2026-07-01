@@ -1,12 +1,8 @@
 import { useEffect, useState } from "react";
-import { getVariables } from "../services/variablesService";
+import { getVariables } from "../plugins/variablesService.ts";
 import VariablesList from "../components/VariablesList/VariablesList.tsx";
-
-type Variable = {
-  ID: number;
-  Name: string;
-  Description: string;
-};
+import type { Variable } from "../types/variable.ts";
+import Loader from "../components/Loader/Loader.tsx";
 
 function Variables() {
   const [data, setData] = useState<Variable[]>([]);
@@ -34,7 +30,7 @@ function Variables() {
 
   return (
     <div className="page">
-      {loading && <p>Loading...</p>}
+      {loading && <Loader />}
       {error && <p style={{ color: "red" }}>{error}</p>}
 
       <VariablesList items={data} />

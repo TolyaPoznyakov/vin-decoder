@@ -21,7 +21,8 @@
 }
 
 .link:hover {
-    color: white;
+    color: var(--text-h);
+    font-size: 23px;
 }
 
 .activeLink {

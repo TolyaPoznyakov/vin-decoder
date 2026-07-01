@@ -3,6 +3,7 @@ import VinForm from "../components/VinForm/VinForm";
 import VinResults from "../components/VinResults/VinResults";
 import SearchHistory from "../components/SearchHistory/SearchHistory.tsx";
 import { useVinDecoder } from "../hooks/useVinDecoder";
+import Loader from "../components/Loader/Loader.tsx";
 
 function Home() {
   const [vinInput, setVinInput] = useState("");
@@ -34,9 +35,7 @@ function Home() {
         externalVin={vinInput}
       />
 
-      {loading && (
-        <p>Loading...</p>
-      )}
+      {loading && <Loader />}
 
       {error && (
         <p style={{ color: "red" }}>

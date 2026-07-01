@@ -1,23 +1,28 @@
+import { Link } from "react-router-dom";
 import DOMPurify from "dompurify";
 import styles from "./VariableItem.module.css";
 
 type VariableItemProps = {
+  id: number;
   name: string;
   description: string;
 };
 
-function VariableItem({ name, description }: VariableItemProps) {
+function VariableItem({ id, name, description }: VariableItemProps) {
   const sanitizedDescription = DOMPurify.sanitize(description);
 
   return (
-    <div className={styles.variableCard}>
-      <h3>{name}</h3>
+    <Link to={`/variables/${id}`} className={styles.variableCard}>
+      <div className={styles.header}>
+        <h3>{name}</h3>
+        <span className={styles.arrow}>→</span>
+      </div>
 
       <div
         className={styles.variableDescription}
         dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
       />
-    </div>
+    </Link>
   );
 }
 

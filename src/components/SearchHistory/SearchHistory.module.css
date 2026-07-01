@@ -60,6 +60,7 @@
 
 .deleteBtn {
     margin-left: 12px;
+    color: var(--text-h);
     width: 30px;
     height: 30px;
     border: none;
@@ -76,4 +77,18 @@
 .deleteBtn:hover {
     color: #d11a2a;
     opacity: 1;
+}
+
+@media (max-width: 850px) {
+    .list {
+        flex-direction: column;
+        overflow-x: visible;
+        scroll-snap-type: none;
+        gap: 10px;
+    }
+
+    .item {
+        flex: 1;
+        min-width: 100%;
+    }
 }
