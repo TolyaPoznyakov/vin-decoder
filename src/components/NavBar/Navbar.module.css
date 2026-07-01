@@ -1,0 +1,32 @@
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    top: 0;
+    margin-bottom: 20px;
+}
+
+.links {
+    display: flex;
+    gap: 30px;
+}
+
+.link {
+    color: #bbb;
+    text-decoration: none;
+    transition: 0.2s;
+    font-weight: 800;
+    font-size: 20px;
+}
+
+.link:hover {
+    color: var(--text-h);
+    font-size: 23px;
+}
+
+.activeLink {
+    color: var(--accent);
+    font-weight: 800;
+    font-size: 23px;
+}

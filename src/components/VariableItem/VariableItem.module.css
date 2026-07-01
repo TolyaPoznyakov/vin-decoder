@@ -1,0 +1,62 @@
+.variableCard {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow);
+
+    display: block;
+    text-decoration: none;
+    color: inherit;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.variableCard:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+    border-color: var(--accent-border);
+}
+
+.variableCard:active {
+    transform: translateY(-1px);
+}
+
+.variableCard h3 {
+    font-size: 18px;
+    margin: 0 0 16px;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.variableDescription {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.variableDescription ul {
+    padding-left: 18px;
+}
+
+.variableCard:hover h3 {
+    color: var(--accent);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.arrow {
+    color: var(--accent);
+    font-size: 18px;
+    transition: transform 0.2s ease;
+}
+
+.variableCard:hover .arrow {
+    transform: translateX(5px);
+}
